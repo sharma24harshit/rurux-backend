@@ -1,6 +1,7 @@
 const express = require('express');
 const streamRouter = express.Router();
 const {FieldModel} = require('../Models/fieldModel');
+const {SubjectModel} = require('../Models/subjectModel');
 const AuthenticateUser = require('../Middleware/Auth');
 
 // Route to add a new stream
@@ -46,6 +47,7 @@ streamRouter.delete('/:id',async (req, res) => {
     try {
         const { id } = req.params;
         const updatedField = await FieldModel.findByIdAndDelete(id);
+        const result = await SubjectModel.deleteMany({ stream: id });
         res.status(200).json({ message: 'Stream deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Failed to update stream' });

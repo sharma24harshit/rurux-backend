@@ -42,7 +42,7 @@ subjectRouter.put('/:id',async (req, res) => {
 
 
 // Route to delete a stream
-subjectRouter.delete('/:id', AuthenticateUser,async (req, res) => {
+subjectRouter.delete('/:id',async (req, res) => {
     try {
         const { id } = req.params;
         const deleteSubject = await SubjectModel.findByIdAndDelete(id);
