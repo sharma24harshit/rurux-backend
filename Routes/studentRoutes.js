@@ -45,7 +45,7 @@ studentRouter.get('/allStudents',async (req, res) => {
 
 studentRouter.put('/:id', async (req, res) => {
     try {
-        const { name, enrollmentID, year, field, username, password } = req.body;
+        const { name, enrollmentID, year, field, username, password ,marks} = req.body;
         const { id } = req.params;
 
         // Check if the student exists
@@ -61,7 +61,7 @@ studentRouter.put('/:id', async (req, res) => {
         student.field = field;
         student.username = username;
         student.password = password;
-
+        student.marks = marks
         // Save updated student
         await student.save();
         

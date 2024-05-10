@@ -24,7 +24,6 @@ app.get("/",(req,res)=>{
 app.use('/students', studentRouter);
 app.use('/fields', streamRouter);
 app.use('/subjects', subjectRouter);
-// app.use('/marks', markRoutes);
 
 
 app.listen(process.env.port, async()=>{

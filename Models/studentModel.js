@@ -6,7 +6,8 @@ const studentSchema = mongoose.Schema({
     year: { type: Number, required: true },
     field: { type: String, required: true },
     username: { type: String, required: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    marks:{type:Array, required:false, default: []}
 },{
     versionKey:false
 })
