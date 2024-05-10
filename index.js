@@ -3,7 +3,6 @@ const dotenv = require('dotenv');
 const {studentRouter} = require('./Routes/studentRoutes');
 const {streamRouter} = require('./Routes/fieldRoutes');
 const {subjectRouter} = require('./Routes/subjectRoutes');
-const {markRoutes} = require('./Routes/markRoutes');
 const {connection} = require("./db");
 const cors = require('cors');
 dotenv.config();
