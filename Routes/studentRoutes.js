@@ -43,9 +43,9 @@ studentRouter.get('/allStudents',async (req, res) => {
     }
 });
 
-studentRouter.put('/:id', async (req, res) => {
+studentRouter.patch('/:id/marks', async (req, res) => {
     try {
-        const { name, enrollmentID, year, field, username, password ,marks} = req.body;
+        const { marks } = req.body;
         const { id } = req.params;
 
         // Check if the student exists
@@ -54,24 +54,17 @@ studentRouter.put('/:id', async (req, res) => {
             return res.status(404).json({ message: 'Student not found' });
         }
 
-        // Update student fields
-        student.name = name;
-        student.enrollmentID = enrollmentID;
-        student.year = year;
-        student.field = field;
-        student.username = username;
-        student.password = password;
-        student.marks = marks
+        // Update marks field
+        student.marks = marks;
+
         // Save updated student
         await student.save();
         
-        res.status(200).json({ message: 'Student detail updated successfully' });
+        res.status(200).json({ message: 'Student marks updated successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Failed to update student' });
+        res.status(500).json({ message: 'Failed to update student marks' });
     }
 });
-
-
 
 
 module.exports = {studentRouter};
