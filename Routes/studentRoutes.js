@@ -1,6 +1,6 @@
 const express = require('express');
 const studentRouter = express.Router();
-const {StudentModel} = require('../Models/studentModel');
+const { StudentModel } = require('../Models/studentModel');
 const jwt = require('jsonwebtoken');
 const AuthenticateUser = require('../Middleware/Auth');
 
@@ -8,10 +8,10 @@ const AuthenticateUser = require('../Middleware/Auth');
 studentRouter.post('/register', async (req, res) => {
     try {
         const { name, enrollmentID, year, field, username, password } = req.body;
-       // console.log(req.body)
+        // console.log(req.body)
         const student = new StudentModel({ name, enrollmentID, year, field, username, password });
         await student.save();
-        res.status(201).json({ message: 'Student registered successfully'});
+        res.status(201).json({ message: 'Student registered successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Failed to register student' });
     }
@@ -26,15 +26,15 @@ studentRouter.post('/login', async (req, res) => {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
         // You can generate a JWT token here if you want to implement authentication
-        const token = jwt.sign({user:student._id}, "rurux");
-        res.status(200).json({ message: 'Login successful' ,data:student[0], token:token});
+        const token = jwt.sign({ user: student._id }, "rurux");
+        res.status(200).json({ message: 'Login successful', data: student[0], token: token });
     } catch (error) {
         res.status(500).json({ message: 'Failed to login' });
     }
 });
 
 // Route to get all registered students
-studentRouter.get('/allStudents',async (req, res) => {
+studentRouter.get('/allStudents', async (req, res) => {
     try {
         const students = await StudentModel.find();
         res.status(200).json(students);
@@ -45,7 +45,7 @@ studentRouter.get('/allStudents',async (req, res) => {
 
 studentRouter.patch('/:id/marks', async (req, res) => {
     try {
-        const { marks } = req.body;
+        const { marks: newMarks } = req.body;
         const { id } = req.params;
 
         // Check if the student exists
@@ -53,13 +53,16 @@ studentRouter.patch('/:id/marks', async (req, res) => {
         if (!student) {
             return res.status(404).json({ message: 'Student not found' });
         }
-
-        // Update marks field
-        student.marks = marks;
+        // Append new marks to existing marks array
+        if (Array.isArray(newMarks)) {
+            student.marks = [...student.marks, ...newMarks];
+        } else {
+            student.marks.push(newMarks);
+        }
 
         // Save updated student
         await student.save();
-        
+
         res.status(200).json({ message: 'Student marks updated successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Failed to update student marks' });
@@ -67,4 +70,4 @@ studentRouter.patch('/:id/marks', async (req, res) => {
 });
 
 
-module.exports = {studentRouter};
+module.exports = { studentRouter };
