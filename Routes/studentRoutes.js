@@ -3,6 +3,17 @@ const studentRouter = express.Router();
 const { StudentModel } = require('../Models/studentModel');
 const jwt = require('jsonwebtoken');
 const AuthenticateUser = require('../Middleware/Auth');
+const WebSocket = require('ws');
+
+const wss = new WebSocket.Server({ port: 8080 });
+
+function broadcastMessage(message) {
+    wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(message);
+        }
+    });
+}
 
 // Route to create a new student with username and password
 studentRouter.post('/register', async (req, res) => {
@@ -75,7 +86,7 @@ studentRouter.patch('/:id/marks', async (req, res) => {
 
         // Save updated student
         await student.save();
-
+        broadcastMessage('Updated' + id);
         res.status(200).json({ message: 'Student marks added successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Failed to update student marks' });
@@ -94,7 +105,7 @@ studentRouter.patch('/:id/delete', async (req, res) => {
             student.marks = student.marks.filter(el => (el.subject !=deleteMarks.subject && el.marks !=deleteMarks.marks));
         
         await student.save();
-
+        broadcastMessage('Updated' + id);
         res.status(200).json({ message: 'Student marks deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Failed to update student marks' });
@@ -116,7 +127,7 @@ studentRouter.patch('/:id/updateMarks', async (req, res) => {
                 : el
         );
         await student.save();
-
+        broadcastMessage('Updated' + id);
         res.status(200).json({ message: 'Student marks updated successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Failed to update student marks' });

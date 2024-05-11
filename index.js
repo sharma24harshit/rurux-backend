@@ -4,6 +4,7 @@ const {studentRouter} = require('./Routes/studentRoutes');
 const {streamRouter} = require('./Routes/fieldRoutes');
 const {subjectRouter} = require('./Routes/subjectRoutes');
 const {connection} = require("./db");
+
 const cors = require('cors');
 dotenv.config();
 
@@ -23,7 +24,6 @@ app.get("/",(req,res)=>{
 app.use('/students', studentRouter);
 app.use('/fields', streamRouter);
 app.use('/subjects', subjectRouter);
-
 
 app.listen(process.env.port, async()=>{
     try {
