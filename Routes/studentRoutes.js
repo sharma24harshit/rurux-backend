@@ -44,6 +44,17 @@ studentRouter.get('/allStudents', async (req, res) => {
     }
 });
 
+// Route to get single registered student
+studentRouter.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const student = await StudentModel.find(id);
+        res.status(200).json({data: student});
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch students' });
+    }
+});
+
 studentRouter.patch('/:id/marks', async (req, res) => {
     try {
         const { marks: newMarks } = req.body;
