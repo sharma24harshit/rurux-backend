@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const AuthenticateUser = require('../Middleware/Auth');
 const WebSocket = require('ws');
 
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocket.Server({ port: 1729 });
 
 function broadcastMessage(message) {
     wss.clients.forEach(client => {
