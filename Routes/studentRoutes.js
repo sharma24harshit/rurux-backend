@@ -63,13 +63,13 @@ studentRouter.patch('/:id/marks', async (req, res) => {
         // Save updated student
         await student.save();
 
-        res.status(200).json({ message: 'Student marks updated successfully' });
+        res.status(200).json({ message: 'Student marks added successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Failed to update student marks' });
     }
 });
 
-studentRouter.delete('/:id/delete', async (req, res) => {
+studentRouter.patch('/:id/delete', async (req, res) => {
     try {
         const { value: deleteMarks } = req.body;
         const { id } = req.params;
@@ -82,7 +82,7 @@ studentRouter.delete('/:id/delete', async (req, res) => {
         
         await student.save();
 
-        res.status(200).json({ message: 'Student marks updated successfully' });
+        res.status(200).json({ message: 'Student marks deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Failed to update student marks' });
     }
