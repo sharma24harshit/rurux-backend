@@ -2,10 +2,10 @@ const express = require('express');
 const studentRouter = express.Router();
 const { StudentModel } = require('../Models/studentModel');
 const jwt = require('jsonwebtoken');
-const AuthenticateUser = require('../Middleware/Auth');
+require("dotenv").config()
 const WebSocket = require('ws');
 
-const wss = new WebSocket.Server({ port: 1729 });
+const wss = new WebSocket.Server({ port: process.env.wsPort });
 
 function broadcastMessage(message) {
     wss.clients.forEach(client => {
