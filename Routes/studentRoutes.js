@@ -48,7 +48,8 @@ studentRouter.get('/allStudents', async (req, res) => {
 studentRouter.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const student = await StudentModel.find(id);
+        const student = await StudentModel.findById(id);
+        console.log()
         res.status(200).json({data: student});
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch students' });
