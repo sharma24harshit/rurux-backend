@@ -27,7 +27,8 @@ studentRouter.post('/login', async (req, res) => {
         }
         // You can generate a JWT token here if you want to implement authentication
         const token = jwt.sign({ user: student._id }, "rurux");
-        res.status(200).json({ message: 'Login successful', data: student[0], token: token });
+        console.log(student)
+        res.status(200).json({ message: 'Login successful', data: student, token: token });
     } catch (error) {
         res.status(500).json({ message: 'Failed to login' });
     }
