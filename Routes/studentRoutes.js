@@ -69,5 +69,46 @@ studentRouter.patch('/:id/marks', async (req, res) => {
     }
 });
 
+studentRouter.delete('/:id/delete', async (req, res) => {
+    try {
+        const { value: deleteMarks } = req.body;
+        const { id } = req.params;
+
+        const student = await StudentModel.findById(id);
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }     
+            student.marks = student.marks.filter(el => (el.subject !=deleteMarks.subject && el.marks !=deleteMarks.marks));
+        
+        await student.save();
+
+        res.status(200).json({ message: 'Student marks updated successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to update student marks' });
+    }
+});
+
+studentRouter.patch('/:id/updateMarks', async (req, res) => {
+    try {
+        const { prevMarks, newMarks } = req.body;
+        const { id } = req.params;
+
+        const student = await StudentModel.findById(id);
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }     
+        student.marks = student.marks.map(el => 
+            (el.subject === prevMarks.subject && el.marks === prevMarks.marks) 
+                ? { subject: el.subject, marks: newMarks.marks } 
+                : el
+        );
+        await student.save();
+
+        res.status(200).json({ message: 'Student marks updated successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to update student marks' });
+    }
+});
+
 
 module.exports = { studentRouter };
